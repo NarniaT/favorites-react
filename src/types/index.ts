@@ -7,5 +7,5 @@ export type Favorites = Array<Product["id"]>;
 
 export type FavoriteContext = {
   favorites: Favorites;
-  toggleFavorite: (pid: Product["id"]) => void;
+  setFavorites: React.Dispatch<React.SetStateAction<Favorites>>;
 };

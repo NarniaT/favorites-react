@@ -1,16 +1,24 @@
 import React, { useContext } from "react";
 import { Product } from "../types";
 import { FavsContext } from "../contexts/FavsProvider";
+import { toggleFavorite } from "../fetchers/FavoritesFetcher";
 
 type Props = {
   data: Product;
 };
 
 const ProductItem = ({ data }: Props) => {
-  const { favorites, toggleFavorite } = useContext(FavsContext);
+  const { favorites, setFavorites } = useContext(FavsContext);
 
-  function doToggleFavorite(productId: Product["id"]) {
-    toggleFavorite(productId);
+  async function runToggleFavorite() {
+    const isFav = await toggleFavorite(data.id);
+    if (!isFav) {
+      setFavorites((prevFavIds) =>
+        prevFavIds.filter((pfid) => pfid !== data.id)
+      );
+    } else {
+      setFavorites((prevFavIds) => [...prevFavIds, data.id]);
+    }
   }
 
   return (
@@ -19,9 +27,7 @@ const ProductItem = ({ data }: Props) => {
       <input
         type="checkbox"
         id="toggleFavorite"
-        onChange={function runToggleFavorite() {
-          doToggleFavorite(data.id);
-        }}
+        onChange={runToggleFavorite}
         checked={favorites.includes(data.id)}
       />
     </div>
