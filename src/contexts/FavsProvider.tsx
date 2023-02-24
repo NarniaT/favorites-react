@@ -1,6 +1,9 @@
 import { createContext, useEffect, useState } from "react";
 import { Favorites, FavoriteContext, Product } from "../types";
-import { getFavorites } from "../fetchers/FavoritesFetcher";
+import {
+  getFavorites,
+  toggleFavorite as _toggleFavorite,
+} from "../fetchers/FavoritesFetcher";
 
 const FavsContext = createContext<FavoriteContext>({} as FavoriteContext);
 
@@ -10,16 +13,25 @@ export default function FavsProvider({ children }: { children: JSX.Element }) {
   useEffect(() => {
     const fetchFavorites = async () => {
       const res = (await getFavorites()) as Favorites;
-      setFavorites(res);
+      setFavorites((prev) => res);
     };
     fetchFavorites();
   }, []);
+
+  async function toggleFavorite(id: Product["id"]) {
+    const isFav = await _toggleFavorite(id);
+    if (!isFav) {
+      setFavorites((prevFavIds) => prevFavIds.filter((pfid) => pfid !== id));
+    } else {
+      setFavorites((prevFavIds) => [...prevFavIds, id]);
+    }
+  }
 
   return (
     <FavsContext.Provider
       value={{
         favorites,
-        setFavorites,
+        toggleFavorite,
       }}
     >
       {children}

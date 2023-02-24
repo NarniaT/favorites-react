@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import ProductItem from "./ProductItem";
-import { Product, Favorites } from "../types";
+import { Product } from "../types";
 import { FavsContext } from "../contexts/FavsProvider";
 
 type Props = {
