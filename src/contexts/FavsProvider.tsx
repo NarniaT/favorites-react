@@ -10,21 +10,18 @@ const FavsContext = createContext<FavoriteContext>({} as FavoriteContext);
 export default function FavsProvider({ children }: { children: JSX.Element }) {
   const [favorites, setFavorites] = useState<Favorites>([]);
 
+  const fetchFavorites = async () => {
+    const res = (await getFavorites()) as Favorites;
+    setFavorites((prev) => res);
+  };
+
   useEffect(() => {
-    const fetchFavorites = async () => {
-      const res = (await getFavorites()) as Favorites;
-      setFavorites((prev) => res);
-    };
     fetchFavorites();
   }, []);
 
   async function toggleFavorite(id: Product["id"]) {
-    const isFav = await _toggleFavorite(id);
-    if (!isFav) {
-      setFavorites((prevFavIds) => prevFavIds.filter((pfid) => pfid !== id));
-    } else {
-      setFavorites((prevFavIds) => [...prevFavIds, id]);
-    }
+    await _toggleFavorite(id);
+    await fetchFavorites();
   }
 
   return (
