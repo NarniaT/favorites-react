@@ -1,12 +1,13 @@
 import { Favorites } from "../types";
+import { Product } from "../types";
 
 let favorites: Favorites = [];
 
 export function getFavorites() {
-  return new Promise((resolve) => {
-    setTimeout(() => respond(resolve), 500);
+  return new Promise<Product["id"][]>((resolve) => {
+    setTimeout(() => respond(), 500);
 
-    function respond(resolve: (value: unknown) => void) {
+    function respond() {
       resolve(favorites);
     }
   });

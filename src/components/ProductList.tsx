@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import ProductItem from "./ProductItem";
 import { Product } from "../types";
-import { FavsContext } from "../contexts/FavsProvider";
+import { useQuery } from "react-query";
+import { getFavorites } from "../fake-fetchers/FavoritesFetcher";
 
 type Props = {
   favoritesOnly?: boolean;
@@ -13,11 +14,14 @@ export default function ProductList({
   products,
 }: Props) {
   let filteredProducts = products;
-  const { favorites } = useContext(FavsContext);
+  const { data: favorites } = useQuery<Product["id"][], Error>(
+    "favorites",
+    getFavorites
+  );
 
   if (favoritesOnly) {
     filteredProducts = products.filter(function isFavorite(p) {
-      return favorites.includes(p.id);
+      return favorites!.includes(p.id);
     });
   }
 
