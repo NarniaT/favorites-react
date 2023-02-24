@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from "react";
 import ProductItem from "./ProductItem";
 import { Product, Favorites } from "../types";
 import { FavsContext } from "../contexts/FavsProvider";
-import { getFavorites } from "../fetchers/FavoritesFetcher";
 
 type Props = {
   favoritesOnly?: boolean;
@@ -14,15 +13,7 @@ export default function ProductList({
   products,
 }: Props) {
   let filteredProducts = products;
-  const { favorites, setFavorites } = useContext(FavsContext);
-
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      const res = (await getFavorites()) as Favorites;
-      setFavorites(res);
-    };
-    fetchFavorites();
-  }, []);
+  const { favorites } = useContext(FavsContext);
 
   if (favoritesOnly) {
     filteredProducts = products.filter(function isFavorite(p) {
