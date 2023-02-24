@@ -13,7 +13,7 @@ export function getFavorites() {
   });
 }
 
-export async function toggleFavorite(id: number) {
+export async function toggleFavorite(id: Product["id"]) {
   return new Promise<boolean>(function fulfilPromise(resolve) {
     setTimeout(() => runToggleFavorite(id), 500);
 
