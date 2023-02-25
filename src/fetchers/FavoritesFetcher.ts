@@ -1,6 +1,6 @@
 import { Favorites } from "../types";
 
-const favorites: Favorites = [];
+let favorites: Favorites = [];
 
 export function getFavorites() {
   return new Promise((resolve) => {
@@ -20,10 +20,10 @@ export async function toggleFavorite(id: number) {
       const idx = favorites.findIndex((favId) => favId === id);
       const isAlreadyFavorite = idx !== -1;
       if (isAlreadyFavorite) {
-        favorites.splice(idx, 1);
+        favorites = favorites.filter((favId) => favId !== id);
         resolve(false); // i.e., is no more favorite.
       } else {
-        favorites.push(id);
+        favorites = [...favorites, id];
         resolve(true);
       }
     }
