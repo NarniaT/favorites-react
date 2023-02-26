@@ -7,7 +7,7 @@ type Props = {
 };
 
 const ProductItem = ({ data }: Props) => {
-  const { favorites, toggleFavorite } = useFavorites();
+  const { favorites, toggleFavorite, isLoading } = useFavorites();
 
   return (
     <div>
@@ -16,7 +16,7 @@ const ProductItem = ({ data }: Props) => {
         type="checkbox"
         id="toggleFavorite"
         onChange={() => toggleFavorite(data.id)}
-        checked={favorites!.includes(data.id)}
+        checked={isLoading ? false : favorites!.includes(data.id)}
       />
     </div>
   );
